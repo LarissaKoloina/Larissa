@@ -1,4 +1,4 @@
-// === Recherche ===
+// === Fonction Recherche ===
 document.getElementById("searchBtn").addEventListener("click", async () => {
   const query = document.getElementById("searchInput").value.trim();
   const resultsDiv = document.getElementById("searchResults");
@@ -7,7 +7,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
     return;
   }
 
-  // Exemple : rediriger vers une recherche Google
+  // Redirection vers Google
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
   resultsDiv.innerHTML = `
     <p>Résultats pour <strong>${query}</strong> :</p>
@@ -15,7 +15,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
   `;
 });
 
-// === ChatGPT Simulation ===
+// === Fonction ChatGPT ===
 const chatBox = document.getElementById("chatBox");
 const sendBtn = document.getElementById("sendBtn");
 const chatInput = document.getElementById("chatInput");
@@ -29,22 +29,49 @@ function addMessage(message, sender = "bot") {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Simulation locale
+// === Fonction pour obtenir une réponse de l'API OpenAI ===
+async function getChatGPTResponse(prompt) {
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer TA_CLE_API_ICI" // <-- ⚠️ Mets ta clé ici
+      },
+      body: JSON.stringify({
+        model: "gpt-5-turbo",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      console.error(data.error);
+      return "⚠️ Erreur de connexion à l'API.";
+    }
+
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error(error);
+    return "⚠️ Erreur réseau.";
+  }
+}
+
+// === Envoi de message ===
 sendBtn.addEventListener("click", async () => {
   const message = chatInput.value.trim();
   if (!message) return;
+
   addMessage(message, "user");
   chatInput.value = "";
+  addMessage("💭 GPT réfléchit...", "bot");
 
-  // Réponse simulée (tu peux ici appeler l'API OpenAI)
-  addMessage("🤖 Je réfléchis...");
-  setTimeout(() => {
-    chatBox.lastChild.remove();
-    addMessage(`Voici une réponse simulée pour : <em>${message}</em> 😄`, "bot");
-  }, 1000);
+  const reply = await getChatGPTResponse(message);
+  chatBox.lastChild.remove(); // Enlève le message "réfléchit..."
+  addMessage(reply, "bot");
 });
 
-// Entrée avec "Enter"
+// === Envoi avec la touche Entrée ===
 chatInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendBtn.click();
 });
