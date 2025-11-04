@@ -151,24 +151,59 @@
     });
 
     // Simple chat functionality
-    const chatBox = document.getElementById('chatBox');
-    const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
+    // Chat amélioré avec réponses automatiques simulées
+const chatBox = document.getElementById('chatBox');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
 
-    sendBtn.addEventListener('click', () => {
-      const message = chatInput.value.trim();
-      if(message) {
-        const p = document.createElement('p');
-        p.textContent = "Vous: " + message;
-        chatBox.appendChild(p);
-        chatInput.value = "";
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-    });
+// Définir des réponses automatiques simples
+const responses = [
+  { keywords: ['bonjour', 'salut', 'hello'], reply: "Bonjour ! Comment puis-je vous aider ?" },
+  { keywords: ['heure', 'temps'], reply: "L'heure actuelle à Madagascar est affichée dans la section 'Horaire'." },
+  { keywords: ['météo', 'temps', 'pluie', 'soleil'], reply: "Vous pouvez consulter la météo sur Google via le lien dans la section 'Horaire'." },
+  { keywords: ['nuit', 'jour', 'mode'], reply: "Vous pouvez changer le mode jour/nuit dans la section 'Paramètres'." },
+  { keywords: ['merci', 'ok'], reply: "Avec plaisir ! 😊" },
+];
 
-    chatInput.addEventListener('keypress', (e) => {
-      if(e.key === 'Enter') sendBtn.click();
-    });
+// Fonction pour détecter une réponse
+function getAutoReply(message) {
+  const msg = message.toLowerCase();
+  for (let r of responses) {
+    if (r.keywords.some(word => msg.includes(word))) {
+      return r.reply;
+    }
+  }
+  return "Je n'ai pas compris. Pouvez-vous reformuler ?";
+}
+
+// Envoyer un message
+function sendMessage() {
+  const message = chatInput.value.trim();
+  if (message) {
+    // Afficher le message de l'utilisateur
+    const pUser = document.createElement('p');
+    pUser.textContent = "Vous: " + message;
+    chatBox.appendChild(pUser);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    chatInput.value = "";
+
+    // Réponse automatique avec petit délai pour simuler un assistant réactif
+    setTimeout(() => {
+      const reply = getAutoReply(message);
+      const pBot = document.createElement('p');
+      pBot.textContent = "Assistant: " + reply;
+      pBot.style.color = "#00ffff"; // couleur différente pour le bot
+      chatBox.appendChild(pBot);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 600); // 600ms de délai
+  }
+}
+
+// Événements
+sendBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
   </script>
 
 </body>
