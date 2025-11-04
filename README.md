@@ -1,2 +1,175 @@
-# Larissa
-Lr.
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Larissa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+    aside {
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100%;
+      background: #111;
+      color: #fff;
+      transition: left 0.3s;
+      padding-top: 60px;
+    }
+    aside.active { left: 0; }
+    aside a {
+      display: block;
+      padding: 15px;
+      color: #fff;
+      text-decoration: none;
+    }
+    aside a:hover { background: #222; }
+    #content {
+      margin-left: 0;
+      transition: margin-left 0.3s;
+      padding: 20px;
+    }
+    #content.shifted { margin-left: 250px; }
+    .menu-toggle {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-dark text-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow fixed-top">
+    <div class="container-fluid">
+      <span class="menu-toggle text-info me-3">☰</span>
+      <a class="navbar-brand fw-bold text-primary" href="#"> Assistant</a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-light" href="#">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="#horaire">Horaire</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="#parametres">Paramètres</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="#assistance">Assistance</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Aside menu -->
+  <aside id="sidebar">
+    <a href="#" data-section="accueil">Accueil</a>
+    <a href="#" data-section="horaire">Horaire</a>
+    <a href="#" data-section="parametres">Paramètres</a>
+    <a href="#" data-section="assistance">Assistance</a>
+  </aside>
+
+  <!-- Main content -->
+  <div id="content" class="mt-5 pt-4">
+    
+    <!-- Accueil -->
+    <section id="accueil">
+      <div class="card bg-black text-light shadow-lg mb-4 p-4 rounded">
+        <h4 class="text-info"> Accueil</h4>
+        <p>Bienvenue sur votre assistant personnalisé !</p>
+      </div>
+    </section>
+
+    <!-- Horaire -->
+    <section id="horaire">
+      <div class="card bg-black text-light shadow-lg mb-4 p-4 rounded">
+        <h4 class="text-info"> Horaire</h4>
+        <p>Heure actuelle à Madagascar : <span id="madagascarTime">--:--:--</span></p>
+        <p>Météo : <a href="https://www.google.com/search?q=météo+Antananarivo" target="_blank" class="text-info">Rechercher sur Google</a></p>
+      </div>
+    </section>
+
+    <!-- Paramètres -->
+    <section id="parametres">
+      <div class="card bg-black text-light shadow-lg mb-4 p-4 rounded">
+        <h4 class="text-info"> Paramètres</h4>
+        <button id="toggleTheme" class="btn btn-outline-info">Activer mode nuit/jour</button>
+      </div>
+    </section>
+
+    <!-- Assistance -->
+    <section id="assistance">
+      <div class="card bg-black text-light shadow-lg p-4 rounded">
+        <h4 class="text-info mb-3"> Assistance</h4>
+        <div id="chatBox" class="chat-box mb-3 p-3 border border-secondary rounded bg-dark" style="height: 300px; overflow-y: auto;"></div>
+        <div class="input-group">
+          <input type="text" id="chatInput" class="form-control bg-dark text-light" placeholder="Écris ton message...">
+          <button class="btn btn-outline-primary" id="sendBtn">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="text-center text-secondary mt-5 mb-3 small">
+    © Larissa <strong>2025</strong>
+  </footer>
+
+  <script>
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      content.classList.toggle('shifted');
+    });
+
+    // Sidebar link scroll
+    document.querySelectorAll('aside a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const section = document.getElementById(link.dataset.section);
+        section.scrollIntoView({behavior: 'smooth'});
+        sidebar.classList.remove('active');
+        content.classList.remove('shifted');
+      });
+    });
+
+    // Madagascar time
+    function updateMadagascarTime() {
+      const options = { timeZone: 'Indian/Antananarivo', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false };
+      document.getElementById('madagascarTime').textContent = new Date().toLocaleTimeString('fr-FR', options);
+    }
+    setInterval(updateMadagascarTime, 1000);
+    updateMadagascarTime();
+
+    // Toggle theme
+    const toggleThemeBtn = document.getElementById('toggleTheme');
+    toggleThemeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    // Simple chat functionality
+    const chatBox = document.getElementById('chatBox');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    sendBtn.addEventListener('click', () => {
+      const message = chatInput.value.trim();
+      if(message) {
+        const p = document.createElement('p');
+        p.textContent = "Vous: " + message;
+        chatBox.appendChild(p);
+        chatInput.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') sendBtn.click();
+    });
+  </script>
+
+</body>
+</html>
