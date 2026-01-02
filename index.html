@@ -368,13 +368,14 @@
         const chatInput = document.getElementById('chatInput');
 
         const botKnowledge = [
-            { triggers: ['bonjour', 'salut', 'coucou', 'hello'], answer: "Salut ! Ravi de te voir. Que puis-je faire pour toi aujourd'hui ?" },
-            { triggers: ['ça va', 'comment vas tu'], answer: "Je suis un programme informatique, donc je vais toujours bien tant que mon code fonctionne ! Et toi ?" },
+            { triggers: ['bonjour', 'salut', 'coucou', 'hello'], answer: "Salut ! Ravie de te voir. Que puis-je faire pour toi aujourd'hui ?" },
+            { triggers: ['ça va', 'comment vas tu'], answer: "Je suis un programme informatique de Larissa, donc je vais toujours bien tant que mon code fonctionne ! Et toi ?" },
             { triggers: ['heure', 'quelle heure'], answer: "Il suffit de regarder la section 'Heure Mada' dans le menu, mais je peux te dire qu'il est exactement l'heure d'être productif !" },
-            { triggers: ['qui es tu', 't\'es qui', 'ton nom'], answer: "Je suis Larissa, ton assistant virtuel créé en HTML et JS." },
+            { triggers: ['qui es tu', 't\'es qui', 'ton nom'], answer: "Je suis un IA de Larissa, ton assistant virtuel créé en HTML et JS." },
             { triggers: ['madagascar', 'mada'], answer: "Madagascar est une île magnifique. J'y suis synchronisé pour l'heure." },
             { triggers: ['merci'], answer: "Avec plaisir !" },
             { triggers: ['blague', 'rire'], answer: "Que fait un développeur quand il s'ennuie ? Il se débogue !" }
+            { triggers: ['con', 'pute', 'merde', 'putain'], answer: "Va te faire foutre!" }
         ];
 
         function getBotResponse(input) {
