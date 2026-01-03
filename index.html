@@ -24,12 +24,12 @@
             padding: 0;
         }
 
-        /* --- LOGIN SCREEN --- */
+        
         #login-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
             background-color: #000;
-            z-index: 9999; /* Au-dessus de tout */
+            z-index: 9999; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -62,14 +62,14 @@
             box-shadow: none;
         }
 
-        /* --- APP CONTAINER (Hidden by default) --- */
+      
         #app-interface {
-            display: none; /* Caché tant que pas connecté */
+            display: none; 
             opacity: 0;
             transition: opacity 1s ease;
         }
 
-        /* --- Sidebar & Navigation --- */
+        
         #sidebar {
             width: var(--sidebar-width);
             height: 100vh;
@@ -99,7 +99,7 @@
         }
         #sidebar i { width: 30px; text-align: center; margin-right: 10px; }
 
-        /* --- Main Content --- */
+        
         #main-content {
             transition: margin-left 0.4s ease;
             padding: 20px;
@@ -116,12 +116,11 @@
         }
         #overlay.active { display: block; }
 
-        /* --- Sections --- */
         .section-content { display: none; animation: fadeIn 0.5s; }
         .section-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Chat Interface --- */
+       
         .chat-container {
             height: 65vh;
             background: var(--bg-card);
@@ -299,7 +298,7 @@
             } else {
                 // Erreur
                 errorMsg.style.display = 'block';
-                // Secouer la carte (optionnel mais sympa)
+                
                 document.querySelector('.login-card').animate([
                     { transform: 'translateX(0)' },
                     { transform: 'translateX(-10px)' },
@@ -316,10 +315,9 @@
 
         // Fonction Logout
         function logout() {
-            location.reload(); // Recharge la page pour revenir au login
+            location.reload(); 
         }
 
-        // --- RESTE DU CODE DE L'APPLICATION ---
         
         // 1. Menu
         const sidebar = document.getElementById('sidebar');
@@ -358,8 +356,8 @@
         const chatBox = document.getElementById('chatBox');
         const chatInput = document.getElementById('chatInput');
         const botKnowledge = [
-            { triggers: ['bonjour', 'salut'], answer: "Salut Larissa ! Prête à travailler ?" },
-            { triggers: ['heure'], answer: "Regarde l'horloge juste au-dessus, elle est à l'heure de Tana !" },
+            { triggers: ['bonjour', 'salut', 'coucou', 'hi'], answer: "Salut ! Prête à travailler ?" },
+            { triggers: ['heure', 'jour'], answer: "Regarde l'horloge juste au-dessus, elle est à l'heure de Tana !" },
             { triggers: ['merci'], answer: "De rien !" },
             { triggers: ['ca va', 'ça va'], answer: "Toujours au top." }
         ];
